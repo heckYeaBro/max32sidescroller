@@ -31,7 +31,7 @@ int BTN4_state = 0;
 
 int activeBullets[128][32];
 int playerPos[128][32];
-int enemyPos[128][32];
+int activeEnemies[128][32];
 int screenSpace[128][32];
 
 int pPosX = 0;
@@ -145,19 +145,6 @@ void drawScreen() {
 // Draw The player ship
 void drawPlayerShip(int pixel) {
 
-	//int x = 0;
-	//int y = 0;
-
-/*	for (int i = 0; i < 128; i++) {
-		for (int j = 0; j < 32; j++) {
-			if (playerPos[i][j] == 1) {
-				x = i;
-				y = j;
-			}
-		}
-	}*/
-
-
 	screenSpace[pPosX][pPosY] = pixel;
 	screenSpace[pPosX + 1][pPosY] = pixel;
     screenSpace[pPosX + 2][pPosY] = pixel;
@@ -205,11 +192,11 @@ void drawEnemies() {
 // Detect if any bullets hit a target
 void detectBulletHits(int x, int y) {
 
-	if (enemyPos[x][y] == 1 || enemyPos[x][y + 1] == 1 || enemyPos[x][y + 1] == 1) {
+	if (activeEnemies[x][y] == 1 || activeEnemies[x][y + 1] == 1 || activeEnemies[x][y + 1] == 1) {
 
-		enemyPos[x][y + 1] = 0;
-		enemyPos[x][y] = 0;
-		enemyPos[x][y - 1] = 0;
+		activeEnemies[x][y + 1] = 0;
+		activeEnemies[x][y] = 0;
+		activeEnemies[x][y - 1] = 0;
 
 		deleteEnemy(x,y);
 
@@ -233,31 +220,14 @@ void deleteEnemy(int x, int y) {
 
 void movePlayer(int direction) {
 
-	int x = 0;
-	int y = 0;
-
-	//if (direction == 1 && playerPos[20][27] == 1) {
 	if (direction == 1 && pPosY == 27) {
 		return;
 	}
-	//}
-	//if (direction == -1 && playerPos[20][4] == 1) {
+
 	if (direction == 1 && pPosY == 4) {
 		return;
 	}
 
-
-	/*for (int i = 0; i < 128; i++) {
-		for (int j = 0; j < 32; j++) {
-			if (playerPos[i][j] == 1) {
-				x = i;
-				y = j;
-			}
-		}
-	}*/
-
-	//playerPos[x][y] = 0;
-	//playerPos[x][y + direction] = 1;
 	pPosY += direction;
 
 }
@@ -315,7 +285,6 @@ void createBarriers() {
 }
 
 void createInitialPlayerShip() {
-	//playerPos[20][16] = 1;
 	pPosX = 20;
 	pPosY = 16;
 }
@@ -323,21 +292,10 @@ void createInitialPlayerShip() {
 void createEnemies() {
 	int rand = random(1000);
 	if (rand % 33 == 0) {
-		//TODO ADD CODE TO ADD ENEMIES
+		activeEnemies[124][random(5,29)] = 1;
 	}
 }
 
 void createNewBullet() {
-
-	/*for (int i = 0; i < 128; i++) {
-		for (int j = 0; j < 32; j++) {
-			if (playerPos[i][j] == 1) {
-				activeBullets[i + 2][j] = 1;
-			}
-		}
-	}*/
-
 	activeBullets[pPosX + 2][pPosY] = 1;
-
-
 }
